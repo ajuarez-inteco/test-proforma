@@ -1,0 +1,121 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  mode: 'jit',
+  content: [
+    './src/**/*.{js,jsx}',
+    './public/index.html',
+  ],
+  theme: {
+    screens: {
+      sm: {
+        max: '768px',
+      },
+      md: '768px',
+      lg: '976px',
+      xl: '1440px',
+    },
+    colors: {
+      black: '#000',
+      pfBlack: '#333333',
+      gray: '#e7e7e7e7',
+      grayDark: '#A7A7A7',
+      white: '#ffffff',
+      blueLight: '#91d3e1',
+      blue: '#408bdd',
+      blueDark: '#004ab5',
+      red: '#c33222',
+      greenLight: '#9bc99b',
+      green: '#66afa3',
+      greenDark: '#007a66',
+      orange: '#e78952',
+      orangeDark: '#e56854',
+      yellowLigth: '#dbbe52',
+      yellow: '#ddbf52',
+      yellowDark: '#d7a554',
+      purple: '#542c8d',
+      purpleDark: '#40309d',
+      zinc: '#F2F2F2',
+    },
+    minHeight: {
+      pfPage: 'calc(100vh - 90px)',
+      full: '100%',
+      portal: '100vh',
+      modal: '38rem',
+    },
+    minWidth: {
+      modal: '35.5rem',
+    },
+    maxWidth: {
+      200: '12.5rem',
+      256: '16rem',
+      368: '23rem',
+      360: '22.5rem',
+      568: '35.5rem',
+      864: '54rem',
+    },
+    extend: {
+      backgroundImage: {
+        'get-started': 'url(\'https://s3.us-east-2.amazonaws.com/data.assets/Onboardingohoto.jpeg\')',
+      },
+      colors: {
+        'blueLight-fade': 'rgba(145, 211, 225, 0.25)',
+        'blue-fade': 'rgba(64, 139, 221, 0.25)',
+        'blueDark-fade': 'rgba(0, 74, 181, 0.25)',
+        'red-fade': 'rgba(195, 50, 34, 0.25)',
+        'greenLight-fade': 'rgba(155, 201, 155, 0.25)',
+        'green-fade': 'rgba(102, 175, 163, 0.25)',
+        'greenDark-fade': 'rgba(0, 122, 102, 0.25)',
+        'orange-fade': 'rgba(231, 137, 82, 0.25)',
+        'orangeDark-fade': 'rgba(229, 104, 84, 0.25)',
+        'yellowLigth-fade': 'rgba(219, 190, 82, 0.25)',
+        'yellow-fade': 'rgba(221, 191, 82, 0.25)',
+        'yellowDark-fade': 'rgba(215, 165, 84, 0.25)',
+        'purple-fade': 'rgba(84, 44, 141, 0.25)',
+        'purpleDark-fade': 'rgba(64, 48, 157, 0.25)',
+        overlay: '#ffffff80',
+      },
+      boxShadow: {
+        prDefault: '0 4px 4px rgba(0,0,0,0.25)',
+      },
+      spacing: {
+        m80: 'calc(100vh/7)',
+        5.5: '5.5rem',
+        17: '17rem',
+        35: '2.188rem',
+        88: '5.5rem',
+        100: '6.25rem',
+        148: '9.25rem',
+        202: '12.625rem',
+        272: '17rem',
+        287: '17.938rem',
+        292: '18.25rem',
+        338: '21.125rem',
+        368: '23rem',
+        508: '31.75rem',
+      },
+      height: {
+        layout: 'calc(100vh - 90px)',
+      },
+      gridTemplateColumns: {
+        aside: '132px auto',
+        models: '250px auto',
+      },
+      inset: {
+        'middle-circle': 'calc(50% - 0.375rem)',
+      },
+      content: {
+        percentage: '%',
+      },
+      margin: {
+        90: '90px',
+      },
+      maxHeight: {
+        modal: '90vh',
+      },
+    },
+    fontFamily: {
+      sans: ['Nunito', 'sans-serif'],
+    },
+  },
+  plugins: [],
+};
