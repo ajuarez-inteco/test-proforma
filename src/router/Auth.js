@@ -13,18 +13,13 @@ import {
 import {
   confirmSignUp,
   resendConfirmationCode,
-  userLoader,
 } from '../services/auth';
 import ErrorPage from '../pages/ErrorPage';
 import { Toast } from '../components';
 
 export const getAuthRouter = (isLogin) => {
-  return isLogin ? [
-    {
-      path: '*',
-      element: <ErrorPage />,
-    },
-  ] : [
+  console.log(isLogin);
+  return [
     {
       path: 'signup',
       element: <SignUp />,
@@ -35,7 +30,6 @@ export const getAuthRouter = (isLogin) => {
       element: <SuccessSignUp />,
       errorElement: <ErrorPage />,
       action: confirmSignUp,
-      loader: userLoader,
       children: [
         {
           children: [

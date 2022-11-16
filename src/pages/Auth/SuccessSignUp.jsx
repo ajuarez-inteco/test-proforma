@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Form,
   Outlet,
   useNavigate,
-  useLoaderData,
   useParams,
 } from 'react-router-dom';
 import {
@@ -19,12 +18,12 @@ import { authSchema } from '../../utils/schema';
 import useSubmit from '../../hooks/submit';
 
 const SuccessSignUp = () => {
-  const user = useLoaderData();
   const action = useConfirmSignUp();
   const schema = authSchema.codeSchema;
   const { userId } = useParams();
   const navigate = useNavigate();
   const fields = ['box1', 'box2', 'box3', 'box4', 'box5', 'box6', 'email'];
+  const [user, setUser] = useState({});
 
   const {
     response,
@@ -39,7 +38,13 @@ const SuccessSignUp = () => {
   });
 
   useEffect(() => {
-    localStorage.removeItem('usertmp');
+    const userDate = JSON.parse(localStorage.getItem('usertmp'));
+    console.log(userDate);
+    userDate.uuid = userId;
+    setUser(userDate);
+  }, []);
+
+  useEffect(() => {
     if (response) navigate('/success/verified');
   }, [response, navigate]);
   const onKeyDown = (e) => {
