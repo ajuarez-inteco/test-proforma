@@ -21,7 +21,8 @@ const App = () => {
     const defaultRouter = [].concat(authRouters, inputRouter);
     setRouter(createBrowserRouter(defaultRouter));
     setHasRouter(true);
-    if (!islogin) {
+    /* eslint-disable no-constant-condition */
+    if (true || islogin) {
       dispatch(localDataModel());
     }
   }, [islogin]);

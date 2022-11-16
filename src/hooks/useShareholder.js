@@ -9,7 +9,8 @@ const useShareholder = () => {
   const { selectItemUuid } = useSelector((state) => state.captable);
   const dispatch = useDispatch();
   const createShareholder = (item) => {
-    if (!islogin) {
+    /* eslint-disable no-constant-condition */
+    if (true || islogin) {
       item.uuid = uuidv4();
       // TODO: Add calc fn
       item.percentOfRound = getNewShareHolder(item);
@@ -20,7 +21,8 @@ const useShareholder = () => {
   };
 
   const updateShareholder = (item) => {
-    if (!islogin) {
+    /* eslint-disable no-constant-condition */
+    if (true || islogin) {
       dispatch(updateDataShareholder(item));
       shareholdersLocalStorage.update(selectItemUuid, item);
     }
@@ -28,7 +30,8 @@ const useShareholder = () => {
   };
 
   const deleteShareholder = (paramId) => {
-    if (!islogin) {
+    /* eslint-disable no-constant-condition */
+    if (true || islogin) {
       dispatch(deleteDataShareholder(paramId));
       shareholdersLocalStorage.delete(selectItemUuid, paramId);
     }

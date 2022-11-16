@@ -29,7 +29,8 @@ const useModel = () => {
       }
       return uuidModel;
     }
-    if (!islogin && currentModels.length > 0) {
+    /* eslint-disable no-constant-condition */
+    if ((true || !islogin) && currentModels.length > 0) {
       dispatch(setModelSelected(currentModels[0]));
       return currentModels[0].uuid;
     }
@@ -38,7 +39,8 @@ const useModel = () => {
   };
 
   const changeModel = (newModelSelected) => {
-    if (!islogin) {
+    /* eslint-disable no-constant-condition */
+    if (true || islogin) {
       dispatch(setModelSelected(newModelSelected));
       return newModelSelected;
     }
@@ -46,7 +48,8 @@ const useModel = () => {
   };
 
   const addModel = (newModel) => {
-    if (!islogin) {
+    /* eslint-disable no-constant-condition */
+    if (true || islogin) {
       const item = {
         uuid: uuidv4(),
         ...modelsValues.modelDefault,
@@ -60,7 +63,8 @@ const useModel = () => {
   };
 
   const updateModel = (uuid, params) => {
-    if (!islogin) {
+    /* eslint-disable no-constant-condition */
+    if (true || islogin) {
       dispatch(updateModelItem({ uuid, ...params }));
       modelsLocalStorage.update(uuid, params);
     }
@@ -68,7 +72,8 @@ const useModel = () => {
   };
 
   const duplicateModel = (uuid) => {
-    if (!islogin) {
+    /* eslint-disable no-constant-condition */
+    if (true || islogin) {
       const [COPY_MODEL = {}] = models.filter(
         (item) => item.uuid === uuid,
       );
@@ -84,7 +89,8 @@ const useModel = () => {
   };
 
   const deleteModel = (uuid) => {
-    if (!islogin) {
+    /* eslint-disable no-constant-condition */
+    if (true || islogin) {
       dispatch(deleteModelItem(uuid));
       modelsLocalStorage.delete(uuid);
     }

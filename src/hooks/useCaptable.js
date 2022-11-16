@@ -51,7 +51,8 @@ const useCaptable = () => {
   };
 
   const updateItemCalcs = (uuidModel, params, calculationsItems = false) => {
-    if (!islogin) {
+    /* eslint-disable no-constant-condition */
+    if (true || islogin) {
       dispatch(updateCaptableItem(params));
       captableLocalStorage.update(uuidModel, params);
       if (calculationsItems) {
@@ -63,7 +64,8 @@ const useCaptable = () => {
   const getData = () => {
     const uuidModel = validateUuid();
     setUuid(uuidModel);
-    if (!islogin) {
+    /* eslint-disable no-constant-condition */
+    if (true || islogin) {
       dispatch(localDataCT(uuidModel));
       calculations(uuidModel);
     }
@@ -71,7 +73,8 @@ const useCaptable = () => {
   };
 
   const addItem = (type) => {
-    if (!islogin) {
+    /* eslint-disable no-constant-condition */
+    if (true || islogin) {
       const itemsChange = (itemstoChange, uuidItemToChange) => {
         itemstoChange.forEach((itemChange) => {
           itemChange.conversionRound = uuidItemToChange;
@@ -113,7 +116,8 @@ const useCaptable = () => {
   };
 
   const deleteItem = (uuidItem) => {
-    if (!islogin) {
+    /* eslint-disable no-constant-condition */
+    if (true || islogin) {
       dispatch(deleteCaptableItem(uuidItem));
       captableLocalStorage.delete(uuid, uuidItem);
       calculations(uuid);
