@@ -16,8 +16,8 @@ const useSignUp = () => (
     company,
     email,
     password,
-  }) => {
-    const userPayload = {
+  }) => (
+    Auth.signUp({
       username: email,
       password,
       attributes: {
@@ -25,11 +25,8 @@ const useSignUp = () => (
         'custom:last_name': lastName,
         'custom:company': company,
       },
-    };
-    const userStr = JSON.stringify(userPayload);
-    localStorage.setItem('usertmp', userStr);
-    return Auth.signUp(userPayload);
-  }
+    })
+  )
 );
 
 const useConfirmSignUp = () => (

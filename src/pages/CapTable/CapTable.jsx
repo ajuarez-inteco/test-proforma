@@ -17,6 +17,8 @@ const Captable = () => {
 
   useEffect(() => {
     getData();
+    // TODO: Add fix to this line
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleTransaction = (type) => {
@@ -58,7 +60,13 @@ const Captable = () => {
   };
 
   const updateStoreCaptable = (data) => {
-    updateItem(data);
+    const { data: DATA = {} } = updateItem(data);
+    const newData = {
+      ...currentTransaction,
+      ...data.data,
+      ...DATA,
+    };
+    setCurrentTransaction(newData);
   };
 
   const goBack = () => {

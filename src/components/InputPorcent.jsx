@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { EditIcon } from './Icons';
 import ToolTipComponent from './ToolTipComponent';
+
+const numberFormat = (value) => {
+  return Number.parseFloat(value).toFixed(2);
+};
 
 const InputPorcent = ({
   name,
@@ -14,8 +18,12 @@ const InputPorcent = ({
   variant,
   noIcon,
 }) => {
-  const [internalValue, setInternalValue] = useState(value);
+  const [internalValue, setInternalValue] = useState(numberFormat(value));
   const [isDisabled, setDisabled] = useState(disabled);
+
+  useEffect(() => {
+    setInternalValue(numberFormat(value));
+  }, [value]);
 
   const cleanRegex = /[^\d.]+/g;
 

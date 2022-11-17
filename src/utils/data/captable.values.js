@@ -32,7 +32,7 @@ const commonRound = {
   preMoney: 2500000,
   shares: '',
   unitShare: 16.67,
-  unitPrice: '',
+  unitPrice: 2.5,
   postMoney: 3000000,
 };
 

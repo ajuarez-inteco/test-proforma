@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Modal from '../../../components/Modal';
 import Button from '../../../components/Button';
@@ -13,6 +13,7 @@ import ShareholderModal from '../../../components/Modal/ShareholderModal';
 import IconDropdown from '../../../components/IconDropdown';
 import useShareholder from '../../../hooks/useShareholder';
 import useOutsideClick from '../../../hooks/useOutsideClick';
+import { formatCurrency } from '../../../utils/format';
 
 const Shareholders = () => {
   const wrapperRef = useRef(null);
@@ -44,12 +45,18 @@ const Shareholders = () => {
     }
   };
 
+  useEffect(() => {
+    if (!showModal) setModalData(null);
+  }, [showModal]);
+
   return (
     <div className="grid grid-cols-9 grid-rows-18 gap-x-6 gap-y-2">
       {showModal && (
         <Modal
           refProp={wrapperRef}
-          closeModal={() => setShowModal(false)}
+          closeModal={() => {
+            setShowModal(false);
+          }}
           defaultBack={false}
         >
           <ShareholderModal
@@ -139,17 +146,17 @@ const Shareholders = () => {
                 </td>
                 <td className="relative">
                   <p className="text-right text-pfBlack text-xl">
-                    {row.investment}
+                    {formatCurrency(row.investment)}
                   </p>
                 </td>
                 <td className="relative">
                   <p className="text-right text-pfBlack text-xl">
-                    {row.shares}
+                    {formatCurrency(row.shares)}
                   </p>
                 </td>
                 <td className="relative">
                   <p className="text-right text-pfBlack text-xl">
-                    {row.percentOfRound}
+                    {row.percentOfRound && row.percentOfRound.toFixed(2)}
                   </p>
                 </td>
                 <td className="relative">

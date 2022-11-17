@@ -13,7 +13,6 @@ function getShareholders(uuid, items) {
     investmentRemaining: item.investment,
     sharesRemaining: item.shares,
   };
-  console.log(values);
   return values;
 }
 

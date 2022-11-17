@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { EditIcon } from './Icons';
 import ToolTipComponent from './ToolTipComponent';
 
+const formatNumber = (value) => {
+  const INITIAL_VALUE = typeof value === 'string';
+  return INITIAL_VALUE ? value : Intl.NumberFormat().format(value);
+};
 const InputMoney = ({
   name,
   disabled,
@@ -15,11 +19,13 @@ const InputMoney = ({
   variant,
   noIcon,
 }) => {
-  const INITIAL_VALUE = typeof value === 'string';
-  const VALUE_STRING = INITIAL_VALUE ? value : Intl.NumberFormat().format(value);
-  const [intValue, setIntValue] = useState(VALUE_STRING);
+  const [intValue, setIntValue] = useState(formatNumber(value));
   const [isDisabled, setDisabled] = useState(disabled);
   const { modelSelected } = useSelector((state) => state.models);
+
+  useEffect(() => {
+    setIntValue(formatNumber(value));
+  }, [value]);
 
   const regex = /\d+$,?/;
   const cleanRegex = /[^\d,]+/g;

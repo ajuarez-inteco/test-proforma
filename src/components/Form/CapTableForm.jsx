@@ -18,7 +18,7 @@ export const CapTableForm = ({
     register, getValues,
   } = useForm();
 
-  const [seeMore, setSeeMore] = useState();
+  const [seeMore, setSeeMore] = useState(false);
   const [internalValues, setInternalValues] = useState({});
 
   const listInputsCompat = (!seeMore && listInputs.length > 8)
@@ -52,6 +52,7 @@ export const CapTableForm = ({
       type: name,
     };
     setInternalValues(newData.data);
+    // update item in redux
     updateTransaction(newData);
   };
 

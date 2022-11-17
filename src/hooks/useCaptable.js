@@ -38,6 +38,8 @@ const useCaptable = () => {
 
   useEffect(() => {
     changeOptionsPreferredRound();
+    // TODO: Add use Callback
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const calculations = (uuidModel, uuidItem = '') => {
@@ -48,24 +50,24 @@ const useCaptable = () => {
     dispatch(setInvestorReturn(c.investorReturn));
     dispatch(localDataShareholders(c.selectItemUuid));
     dispatch(setselectItemUuid(c.selectItemUuid));
+    return c.capitalization.table;
   };
 
   const updateItemCalcs = (uuidModel, params, calculationsItems = false) => {
-    /* eslint-disable no-constant-condition */
-    if (true || islogin) {
+    if (!islogin) {
       dispatch(updateCaptableItem(params));
       captableLocalStorage.update(uuidModel, params);
       if (calculationsItems) {
-        calculations(uuidModel);
+        return calculations(uuidModel);
       }
     }
+    return {};
   };
 
   const getData = () => {
     const uuidModel = validateUuid();
     setUuid(uuidModel);
-    /* eslint-disable no-constant-condition */
-    if (true || islogin) {
+    if (!islogin) {
       dispatch(localDataCT(uuidModel));
       calculations(uuidModel);
     }
@@ -73,8 +75,7 @@ const useCaptable = () => {
   };
 
   const addItem = (type) => {
-    /* eslint-disable no-constant-condition */
-    if (true || islogin) {
+    if (!islogin) {
       const itemsChange = (itemstoChange, uuidItemToChange) => {
         itemstoChange.forEach((itemChange) => {
           itemChange.conversionRound = uuidItemToChange;
@@ -82,42 +83,48 @@ const useCaptable = () => {
             uuid: itemChange.uuid,
             data: itemChange,
           };
-          console.log(i);
           updateItemCalcs(uuid, i);
         });
       };
-      const item = capTableCalcs.getNewItem(uuid, type, itemsChange);
+      let item = capTableCalcs.getNewItem(uuid, type, itemsChange);
       dispatch(addNewCaptableItem(item));
       captableLocalStorage.create(uuid, item);
-      calculations(uuid);
+      const capitalization = calculations(uuid);
+      const resStepCalcs = capTableCalcs.stepCalcs(uuid, item.uuid, capitalization, '');
+      if (resStepCalcs.change) {
+        const ItemToChange = {
+          uuid: item.uuid,
+          data: resStepCalcs.item,
+        };
+        item = { ...item, ...ItemToChange };
+        updateItemCalcs(uuid, ItemToChange);
+      }
       return item;
     }
     return {};
   };
 
   const updateItem = (params) => {
-    console.log(params);
-    // updateItemCalcs(uuid, params, true);
-    // console.log('params')
-    // console.log(params)
-    // res = {}
-    // switch(params.type){
-    //   case 'ownership':
-    //     res = capTableCalcs.ownershipCalcs(params)
-    //     break;
-    //   case 'share':
-    //     res = capTableCalcs.shareCalcs(params)
-    //   default:
-    //     break
-    // }
-    // const Newparams = {...params, ...res}
-    // updateItemCalcs(uuid, Newparams, true)
+    const capitalization = updateItemCalcs(uuid, params, true);
+    const resStepCalcs = capTableCalcs.stepCalcs(
+      uuid,
+      params.uuid,
+      capitalization,
+      params.type,
+    );
+    if (resStepCalcs.change) {
+      const ItemToChange = {
+        uuid: params.uuid,
+        data: resStepCalcs.item,
+      };
+      updateItemCalcs(uuid, ItemToChange);
+      return { ...params, ...ItemToChange };
+    }
     return {};
   };
 
   const deleteItem = (uuidItem) => {
-    /* eslint-disable no-constant-condition */
-    if (true || islogin) {
+    if (!islogin) {
       dispatch(deleteCaptableItem(uuidItem));
       captableLocalStorage.delete(uuid, uuidItem);
       calculations(uuid);

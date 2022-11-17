@@ -109,7 +109,7 @@ const SideBar = () => {
       modelsData.menu[i].action = () => setShowModalPresents(true);
       setMenu(modelsData.menu);
     }
-  }, [models]);
+  }, [models, setShowModalPresents, validateUuid]);
 
   return (
     <aside className="flex flex-col gap-5 group/sidebar">

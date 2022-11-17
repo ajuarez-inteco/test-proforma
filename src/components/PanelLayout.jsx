@@ -28,7 +28,7 @@ const PanelLayout = ({
   useEffect(() => {
     document.title = titleName;
     setUserName(`${user['custom:first_name']} ${user['custom:last_name']}`);
-  }, [user]);
+  }, [user, titleName]);
 
   const handleLogOut = async () => {
     try {

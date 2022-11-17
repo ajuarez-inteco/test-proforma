@@ -30,7 +30,7 @@ const useModel = () => {
       return uuidModel;
     }
     /* eslint-disable no-constant-condition */
-    if ((true || !islogin) && currentModels.length > 0) {
+    if ((true || islogin) && currentModels.length > 0) {
       dispatch(setModelSelected(currentModels[0]));
       return currentModels[0].uuid;
     }

@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { EditIcon } from './Icons';
 import ToolTipComponent from './ToolTipComponent';
+
+const formatInitialValue = (value) => {
+  const INITIAL_VALUE = typeof value === 'string';
+  return INITIAL_VALUE ? Number(value) : value;
+};
 
 const InputNumber = ({
   name,
@@ -14,10 +19,12 @@ const InputNumber = ({
   variant,
   noIcon,
 }) => {
-  const INITIAL_VALUE = typeof value === 'string';
-  const NUMBER = INITIAL_VALUE ? Number(value) : value;
-  const [intValue, setIntValue] = useState(NUMBER);
+  const [intValue, setIntValue] = useState(formatInitialValue(value));
   const [isDisabled, setDisabled] = useState(disabled);
+
+  useEffect(() => {
+    setIntValue(formatInitialValue(value));
+  }, [value]);
 
   const regex = /\d+$/;
   const cleanRegex = /[^\d]+/g;

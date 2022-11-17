@@ -314,7 +314,7 @@ function getCapitalization(items) {
     return total;
   }, 0);
 
-  console.log(totalsSharesOptions);
+  // console.log(totalsSharesOptions);
 
   table.forEach((t) => {
     if (isNumeric(totals.shares) && isNumeric(t.shares)) {

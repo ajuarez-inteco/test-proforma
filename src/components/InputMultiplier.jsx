@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { EditIcon } from './Icons';
 import ToolTipComponent from './ToolTipComponent';
+
+const formatNumber = (value) => {
+  const VALUE_STRING = new Intl.NumberFormat().format(value);
+  return `${VALUE_STRING}x`;
+};
 
 const InputMultiplier = ({
   name,
@@ -12,9 +17,12 @@ const InputMultiplier = ({
   tooltip,
   register,
 }) => {
-  const VALUE_STRING = new Intl.NumberFormat().format(value);
-  const [intValue, setIntValue] = useState(`${VALUE_STRING}x`);
+  const [intValue, setIntValue] = useState(formatNumber(value));
   const [isDisabled, setDisabled] = useState(disabled);
+
+  useEffect(() => {
+    setIntValue(formatNumber(value));
+  }, [value]);
 
   const cleanRegex = /[^\d.]+/g;
 

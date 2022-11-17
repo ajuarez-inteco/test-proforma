@@ -17,11 +17,10 @@ const signUp = async ({
         'custom:company': company,
       },
     };
-    console.log(userPayload);
-    const userStr = JSON.stringify(userPayload);
-    console.log(userStr);
-    localStorage.setItem('usertmp', userStr);
+
     const { userSub } = await Auth.signUp(userPayload);
+    const userStr = JSON.stringify(userPayload);
+    localStorage.setItem('usertmp', userStr);
     return `/success/${userSub}`;
   } catch (error) {
     throw new Response('', {

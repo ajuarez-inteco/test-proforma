@@ -1,6 +1,134 @@
-const suscription = {};
+const suscription = {
+  monthlyPrice: {
+    type: 'money',
+    label: 'Monthly Price',
+    name: 'monthlyPrice',
+    tooltip: ``,
+    placeholder: '',
+  },
+  annualPriceIncrease: {
+    type: 'percentage',
+    label: 'Annual Price Increase (%)',
+    name: 'annualPriceIncrease',
+    tooltip: ``,
+    placeholder: '',
+  },
+  subscriptionLength: {
+    type: 'option',
+    label: 'Subscription Length',
+    name: 'subscriptionLength',
+    tooltip: ``,
+    placeholder: '',
+  },
+  renewalRate: {
+    type: 'percentage',
+    label: 'Renewal Rate (%)',
+    name: 'renewalRate',
+    tooltip: ``,
+    placeholder: '',
+  },
+  cashCollection: {
+    type: 'option',
+    label: 'Cash Collection',
+    name: 'cashCollection',
+    tooltip: ``,
+    placeholder: '',
+  },
+  newSubscriptionForecastMethod: {
+    type: 'option',
+    label: 'New Subscription Forecast Method',
+    name: 'newSubscriptionForecastMethod',
+    tooltip: ``,
+    placeholder: '',
+  },
+  firstMonthNumberSales: {
+    type: 'money',
+    label: 'First Month Number of Sales',
+    name: 'firstMonthNumberSales',
+    tooltip: ``,
+    placeholder: '',
+  },
+  firstMonthDate: {
+    type: 'date',
+    label: 'First Month Date',
+    name: 'firstMonthDate',
+    tooltip: ``,
+    placeholder: 'mmmm yy',
+  },
+  lastMonthNumberSales: {
+    type: 'money',
+    label: 'Last Month Number of Sales',
+    name: 'lastMonthNumberSales',
+    tooltip: ``,
+    placeholder: '',
+  },
+  lastMonthDate: {
+    type: 'date',
+    label: 'Last Month Date',
+    name: 'lastMonthDate',
+    tooltip: ``,
+    placeholder: 'mmmm yy',
+  },
+};
 
-const unitSales = {};
+const unitSales = {
+  unitPrice: {
+    type: 'money',
+    label: 'Unit Price',
+    name: 'unitPrice',
+    tooltip: ``,
+    placeholder: '',
+  },
+  annualPriceIncrease: {
+    type: 'percentage',
+    label: 'Annual Price Increase (%)',
+    name: 'annualPriceIncrease',
+    tooltip: ``,
+    placeholder: '',
+  },
+  cashCollection: {
+    type: 'option',
+    label: 'Cash Collection',
+    name: 'cashCollection',
+    tooltip: ``,
+    placeholder: '',
+  },
+  unitSalesForecastMethod: {
+    type: 'option',
+    label: 'Unit Sales Forecast Method',
+    name: 'unitSalesForecastMethod',
+    tooltip: ``,
+    placeholder: '',
+  },
+  firstMonthNumberSales: {
+    type: 'money',
+    label: 'First Month Number of Sales',
+    name: 'firstMonthNumberSales',
+    tooltip: ``,
+    placeholder: '',
+  },
+  firstMonthDate: {
+    type: 'date',
+    label: 'First Month Date',
+    name: 'firstMonthDate',
+    tooltip: ``,
+    placeholder: '',
+  },
+  lastMonthNumberSales: {
+    type: 'money',
+    label: 'Last Month Number of Sales',
+    name: 'lastMonthNumberSales',
+    tooltip: ``,
+    placeholder: '',
+  },
+  lastMonthDate: {
+    type: 'date',
+    label: 'Last Month Date',
+    name: 'lastMonthDate',
+    tooltip: ``,
+    placeholder: '',
+  },
+};
 
 export const revenueData = {
   suscription,

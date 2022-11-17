@@ -74,6 +74,8 @@ const Returns = () => {
     }, {});
 
     setTable(buildTable);
+    // TODO: Add fix to this line
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [investorReturn.table]);
 
   return (

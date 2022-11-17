@@ -25,6 +25,8 @@ const App = () => {
     if (true || islogin) {
       dispatch(localDataModel());
     }
+    // TODO: Add fix to this data
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [islogin]);
 
   return <div>{hasRouter && <RouterProvider router={router} />}</div>;

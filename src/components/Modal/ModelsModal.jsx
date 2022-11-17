@@ -14,7 +14,7 @@ export const ModelsModal = ({
 
   const keysCurrencys = Object.keys(optionsConfig.models.currencys);
   const optionsCurrencys = keysCurrencys.map((key) => ({
-    text: optionsConfig?.models?.currencys[key],
+    text: optionsConfig?.models?.currencys[key].legend,
     value: key,
   }));
 

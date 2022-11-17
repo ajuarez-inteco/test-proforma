@@ -37,7 +37,7 @@ const ShareholderModal = ({
 
   useEffect(() => {
     if (response) onClose();
-  }, [response]);
+  }, [response, onClose]);
 
   return (
     <div className="flex flex-col justify-center items-center max-w-568 gap-8">
@@ -116,7 +116,6 @@ ShareholderModal.propTypes = {
     uuid: PropTypes.string.isRequired,
     investment: PropTypes.number.isRequired,
     shares: PropTypes.number.isRequired,
-    percentOfRound: PropTypes.number.isRequired,
   }),
 };
 

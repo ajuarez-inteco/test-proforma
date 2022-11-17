@@ -61,7 +61,10 @@ LabelInput.propTypes = {
   noOk: PropTypes.bool,
   register: PropTypes.shape({}),
   placeholder: PropTypes.string,
-  defaultValue: PropTypes.string,
+  defaultValue: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
   additionalProps: PropTypes.shape({}),
 };
 

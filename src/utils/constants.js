@@ -1,5 +1,6 @@
 // Name json storage
 export const captable = 'Captable';
+export const revenue = 'Revenue';
 export const models = 'Models';
 export const shareholders = 'Shareholders';
 export const optionsPreferredRound = 'OptionsPreferredRound';
@@ -52,3 +53,29 @@ export const TermsTypeSecurity = 'Preferred Stock';
 export const CaptableFlullRatchetOptionKey = 'fullRatchet';
 export const CaptableCompoundOptionKey = 'compound';
 export const CaptableParticipatingOptionKey = 'participating';
+export const termsFormatKeys = [
+  'sharesIssued',
+  'outstandingShares',
+  'principal',
+  'valuationCap',
+  'outstandingShares',
+  'sellingRound',
+  'preMoneyValuation',
+  'raising',
+  'valueConvertedShares',
+  'postMoneyValuation',
+];
+export const termsFixedKeys = [
+  'ownership',
+  'founders',
+  'investorsPreviousRounds',
+  'total',
+  'conversionDiscount',
+  'pricePerShare',
+  'liquidationPreference',
+  'annualDividend',
+  'founders',
+  'investorsPreviousRounds',
+  'investorsRound',
+  'sharesConverted',
+];

@@ -1,5 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
-import { format, getYear, addMonths } from 'date-fns';
+import {
+  format, getYear, addMonths,
+} from 'date-fns';
 import { captableValues } from '../data/captable.values';
 import {
   itemCaptableFounding,
@@ -74,29 +76,245 @@ function getNewItemInvesment(type, items) {
   return 0;
 }
 
-function defaultCalcs(data, rounds) {
-  const r = JSON.parse(JSON.stringify(rounds));
-  const lastRound = r
-    .reverse()
+function calcPreRaiseShares(values) {
+  const rounds = JSON.parse(JSON.stringify(values));
+  const lastRound = rounds.reverse()
     .find(
       (element) => element.type === 'commonRound'
       || element.type === 'preferredRound'
       || element.type === 'founding',
     );
 
-  data.preRaiseShares = lastRound.type === 'founding'
-    ? lastRound.shares : lastRound.PostRaiseShares;
-  data.postMoney = data.preMoney + data.investment;
-  data.shares = data.investment / data.unitShare;
-  data.simplePostRaiseShares = data.preRaiseShares + data.shares;
-  data.ownership = data.shares / data.simplePostRaiseShares;
-  // data.postRaiseShares = data.preRaiseShares + data.shares +
-  return data;
+  return lastRound.type === 'founding'
+    ? lastRound.shares : lastRound.postRaiseShares;
+}
+
+function calcPostRaiseShares(newData, values, valueCapitalization) {
+  let postRaiseShares = newData.preRaiseShares + newData.shares;
+  if (values.some((round) => round.type === 'convertibleNote'
+    || round.type === 'safeNote') && valueCapitalization.series) {
+    for (let i = 0; i < valueCapitalization.length; i += 1) {
+      const round = valueCapitalization[i];
+      if (round.type === 'convertibleNote'
+        || round.type === 'safeNote'
+        || (round.key && round.key === 'AntiDilutionShares'
+        && round.type === 'prefferedRound')) {
+        postRaiseShares += round.shares;
+      }
+    }
+  }
+  return postRaiseShares;
+}
+
+function defaultCalcs(data, values, valueCapitalization) {
+  const newData = {};
+  newData.preMoney = data.preMoney;
+  newData.unitPrice = data.unitPrice;
+  newData.preRaiseShares = calcPreRaiseShares(values);
+  newData.postMoney = data.preMoney + data.investment;
+  newData.shares = data.investment / data.unitPrice;
+  newData.simplePostRaiseShares = newData.preRaiseShares + newData.shares;
+  newData.unitShare = ((newData.shares / newData.simplePostRaiseShares) * 100).toFixed(2);
+  newData.postRaiseShares = calcPostRaiseShares(newData, values, valueCapitalization);
+  console.log('default new data', newData);
+  return newData;
+}
+
+function sharesCalcs(data, values, valueCapitalization) {
+  const newData = {};
+  newData.preRaiseShares = calcPreRaiseShares(values);
+  newData.simplePostRaiseShares = newData.preRaiseShares + data.shares;
+  newData.unitShare = ((data.shares / newData.simplePostRaiseShares) * 100).toFixed(2);
+  newData.unitPrice = data.investment / data.shares;
+  newData.preMoney = newData.unitPrice * newData.preRaiseShares;
+  newData.postMoney = newData.preMoney + data.investment;
+  newData.postRaiseShares = newData.preRaiseShares + data.shares;
+
+  if (values.some((round) => round.type === 'convertibleNote'
+    || round.type === 'safeNote') && valueCapitalization.series) {
+    for (let i = 0; i < valueCapitalization.length; i += 1) {
+      const round = valueCapitalization[i];
+      if (round.type === 'convertibleNote'
+        || round.type === 'safeNote'
+        || (round.key && round.key === 'AntiDilutionShares'
+        && round.type === 'prefferedRound')) {
+        newData.postRaiseShares += round.shares;
+      }
+    }
+  }
+  console.log('shareCalc new data', newData);
+  return newData;
+}
+
+function ownershipCalcs(data, values, valueCapitalization) {
+  const newData = {};
+  newData.preRaiseShares = calcPreRaiseShares(values);
+  newData.shares = (newData.preRaiseShares * (data.unitShare / 100)) / (1 - (data.unitShare / 100));
+  newData.unitPrice = data.investment / newData.shares;
+  newData.preMoney = newData.unitPrice * newData.preRaiseShares;
+  newData.postMoney = newData.preMoney + data.investment;
+  newData.simplePostRaiseShares = newData.preRaiseShares + newData.shares;
+  newData.postRaiseShares = newData.preRaiseShares + newData.shares;
+  if (values.some((round) => round.type === 'convertibleNote'
+    || round.type === 'safeNote') && valueCapitalization.series) {
+    for (let i = 0; i < valueCapitalization.length; i += 1) {
+      const round = valueCapitalization[i];
+      if (round.type === 'convertibleNote'
+        || round.type === 'safeNote'
+        || (round.key && round.key === 'AntiDilutionShares'
+        && round.type === 'prefferedRound')) {
+        newData.postRaiseShares += round.shares;
+      }
+    }
+  }
+  console.log('ownership New data', newData);
+  return newData;
+}
+
+function unitPriceCalcs(data, values, valueCapitalization) {
+  const newData = {};
+  newData.unitPrice = data.unitPrice;
+  newData.preRaiseShares = calcPreRaiseShares(values);
+  newData.shares = (data.investment / data.unitPrice);
+  newData.simplePostRaiseShares = newData.preRaiseShares + newData.shares;
+  newData.unitShare = ((newData.shares / newData.simplePostRaiseShares) * 100).toFixed(2);
+  newData.preMoney = data.unitPrice * newData.preRaiseShares;
+  newData.postMoney = newData.preMoney + data.investment;
+  newData.postRaiseShares = newData.preRaiseShares + newData.shares;
+  if (values.some((round) => round.type === 'convertibleNote'
+    || round.type === 'safeNote') && valueCapitalization.series) {
+    for (let i = 0; i < valueCapitalization.length; i += 1) {
+      const round = valueCapitalization[i];
+      if (round.type === 'convertibleNote'
+        || round.type === 'safeNote'
+        || (round.key && round.key === 'AntiDilutionShares'
+        && round.type === 'prefferedRound')) {
+        newData.postRaiseShares += round.shares;
+      }
+    }
+  }
+  console.log('unitprice calc newdata', newData);
+  return newData;
+}
+
+function preMoneyCalcs(data, values, valueCapitalization) {
+  const newData = {};
+  newData.preRaiseShares = calcPreRaiseShares(values);
+  newData.unitPrice = data.preMoney / newData.preRaiseShares;
+  newData.postMoney = data.preMoney + data.investment;
+  newData.shares = data.investment / newData.unitPrice;
+  newData.simplePostRaiseShares = newData.preRaiseShares + newData.shares;
+  newData.unitShare = ((newData.shares / newData.simplePostRaiseShares) * 100).toFixed(2);
+  newData.postRaiseShares = newData.preRaiseShares + newData.shares;
+  if (values.some((round) => round.type === 'convertibleNote'
+    || round.type === 'safeNote') && valueCapitalization.series) {
+    for (let i = 0; i < valueCapitalization.length; i += 1) {
+      const round = valueCapitalization[i];
+      if (round.type === 'convertibleNote'
+        || round.type === 'safeNote'
+        || (round.key && round.key === 'AntiDilutionShares'
+        && round.type === 'prefferedRound')) {
+        newData.postRaiseShares += round.shares;
+      }
+    }
+  }
+  console.log('preMoney calc newdata', newData);
+  return newData;
+}
+
+function optionsDefaultCalcs(data, values) {
+  const newData = {};
+  newData.shares = data.shares;
+  newData.preRaiseShares = calcPreRaiseShares(values);
+  newData.simplePostRaiseShares = newData.preRaiseShares + newData.shares;
+  newData.unitShare = ((newData.shares / newData.simplePostRaiseShares) * 100).toFixed(2);
+  console.log('options default calcs', newData);
+  return newData;
+}
+
+function optionsUnitShareCalcs(data, values) {
+  const newData = {};
+  newData.unitShare = data.unitShare;
+  newData.preRaiseShares = calcPreRaiseShares(values);
+  newData.simplePostRaiseShares = newData.preRaiseShares + newData.shares;
+  newData.shares = (newData.preRaiseShares * (newData.unitShare / 100))
+    / (1 - (newData.unitShare / 100));
+  console.log('options default calcs', newData);
+  return newData;
+}
+
+function postMoneyCalcs(data, values, valueCapitalization) {
+  const newData = {};
+  newData.preRaiseShares = calcPreRaiseShares(values);
+  newData.preMoney = data.postMoney - data.investment;
+  newData.unitPrice = newData.preMoney / newData.preRaiseShares;
+  // newData.postMoney = newData.preMoney + data.investment;
+  newData.shares = data.investment / newData.unitPrice;
+  newData.simplePostRaiseShares = newData.preRaiseShares + newData.shares;
+  newData.unitShare = newData.shares / newData.simplePostRaiseShares;
+  newData.postRaiseShares = newData.preRaiseShares + newData.shares;
+  if (values.some((round) => round.type === 'convertibleNote'
+    || round.type === 'safeNote') && valueCapitalization.series) {
+    for (let i = 0; i < valueCapitalization.length; i += 1) {
+      const round = valueCapitalization[i];
+      if (round.type === 'convertibleNote'
+        || round.type === 'safeNote'
+        || (round.key && round.key === 'AntiDilutionShares'
+        && round.type === 'prefferedRound')) {
+        newData.postRaiseShares += round.shares;
+      }
+    }
+  }
+  console.log('postMoney calc newdata', newData);
+  return newData;
+}
+
+function stepCalcs(uuidModel, uuid, capitalization, key) {
+  const valuesTmp = captableLocalStorage.getAll(uuidModel);
+  const index = valuesTmp.findIndex((v) => v.uuid === uuid);
+  const value = valuesTmp[index];
+  const values = captableLocalStorage.getToIndex(uuidModel, index);
+  const valueCapitalization = capitalization.find((v) => v.uuid === uuid);
+  const res = {
+    change: false,
+    item: {},
+  };
+  if (value.type === itemCaptablePreferredRound || value.type === itemCaptableCommonRound) {
+    // console.log('key');
+    // console.log(key);
+    switch (key) {
+      case 'shares':
+        res.item = sharesCalcs(value, values, valueCapitalization);
+        break;
+      case 'unitShare':
+        res.item = ownershipCalcs(value, values, valueCapitalization);
+        break;
+      case 'unitPrice':
+        res.item = unitPriceCalcs(value, values, valueCapitalization);
+        break;
+      case 'preMoney':
+        res.item = preMoneyCalcs(value, values, valueCapitalization);
+        break;
+      case 'postMoney':
+        res.item = postMoneyCalcs(value, values, valueCapitalization);
+        break;
+      default:
+        res.change = true;
+        res.item = defaultCalcs(value, values, valueCapitalization);
+    }
+  }
+  if (value.type === itemCaptableIssueOptionsWarrants) {
+    if (key === 'unitShare') res.item = optionsUnitShareCalcs(value, values, valueCapitalization);
+    else {
+      res.item = optionsDefaultCalcs(value, values, valueCapitalization);
+    }
+  }
+  return res;
 }
 
 function getNewItem(uuid, type, itemsChange) {
   const items = captableLocalStorage.getAll(uuid);
-  let defaultData = JSON.parse(JSON.stringify(captableValues[type]));
+  const defaultData = JSON.parse(JSON.stringify(captableValues[type]));
   defaultData.uuid = uuidv4();
   defaultData.type = type;
   defaultData.name = defaultData.prefixName;
@@ -127,11 +345,6 @@ function getNewItem(uuid, type, itemsChange) {
           && item.conversionRound === '',
     );
     itemsChange(itemsToChange, defaultData.uuid);
-    defaultData = defaultCalcs(defaultData, items);
-  }
-  console.log(type);
-  if (type === itemCaptableCommonRound) {
-    defaultData = defaultCalcs(defaultData, items);
   }
   return defaultData;
 }
@@ -169,4 +382,5 @@ function calculations(uuid, uuidItem) {
 export const capTableCalcs = {
   getNewItem,
   calculations,
+  stepCalcs,
 };
